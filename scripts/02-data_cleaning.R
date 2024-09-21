@@ -35,9 +35,5 @@ capitalize_first <- function(x) {
 cleaned_data <- cleaned_data %>%
   mutate(`Status of Bicycle` = sapply(`Status of Bicycle`, capitalize_first))
 
-# cleaned data without duplicates
-cleaned_data <- cleaned_data %>%
-  distinct()
-
 #### Save data ####
 write_csv(cleaned_data, "data/analysis_data/analysis_data.csv")
