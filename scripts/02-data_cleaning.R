@@ -1,44 +1,43 @@
 #### Preamble ####
-# Purpose: Cleans the raw plane data recorded by two observers..... [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 6 April 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Purpose: Cleans the raw data on bicycle thefts downloaded from OpenDataToronto
+# Author: Xuanle Zhou
+# Date: 21 September 2024 
+# Contact: isabella.zhou@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Pre-requisites: N/A
 
 #### Workspace setup ####
 library(tidyverse)
 
 #### Clean data ####
-raw_data <- read_csv("inputs/data/plane_data.csv")
+raw_data <- read_csv("data/raw_data/raw_data.csv")
 
-cleaned_data <-
-  raw_data |>
-  janitor::clean_names() |>
-  select(wing_width_mm, wing_length_mm, flying_time_sec_first_timer) |>
-  filter(wing_width_mm != "caw") |>
-  mutate(
-    flying_time_sec_first_timer = if_else(flying_time_sec_first_timer == "1,35",
-                                   "1.35",
-                                   flying_time_sec_first_timer)
-  ) |>
-  mutate(wing_width_mm = if_else(wing_width_mm == "490",
-                                 "49",
-                                 wing_width_mm)) |>
-  mutate(wing_width_mm = if_else(wing_width_mm == "6",
-                                 "60",
-                                 wing_width_mm)) |>
-  mutate(
-    wing_width_mm = as.numeric(wing_width_mm),
-    wing_length_mm = as.numeric(wing_length_mm),
-    flying_time_sec_first_timer = as.numeric(flying_time_sec_first_timer)
-  ) |>
-  rename(flying_time = flying_time_sec_first_timer,
-         width = wing_width_mm,
-         length = wing_length_mm
-         ) |> 
-  tidyr::drop_na()
+# Select specific columns and then drop rows with missing values
+cleaned_data <- raw_data %>%
+  select(OCC_YEAR, OCC_MONTH, OCC_DOW, PREMISES_TYPE, BIKE_COST, STATUS) %>%
+  drop_na()
+
+#Rename column name
+cleaned_data <- cleaned_data %>%
+  rename(
+    `Year Offence Occurred` = `OCC_YEAR`,
+    `Month Offence Occurred` = `OCC_MONTH`,
+    `Day of the Week Offence Occurred` = `OCC_DOW`,
+    `Premises Type of Offence` = `PREMISES_TYPE` ,
+    `Cost of Bicycle` = `BIKE_COST`, 
+    `Status of Bicycle` = `STATUS`
+  )
+
+# For Status of Bicycle column, capitalize the first letter and make the rest letters in lowercase
+capitalize_first <- function(x) {
+  return(toupper(substring(x, 1, 1)) %>% paste0(tolower(substring(x, 2))))
+}
+cleaned_data <- cleaned_data %>%
+  mutate(`Status of Bicycle` = sapply(`Status of Bicycle`, capitalize_first))
+
+# cleaned data without duplicates
+cleaned_data <- cleaned_data %>%
+  distinct()
 
 #### Save data ####
-write_csv(cleaned_data, "outputs/data/analysis_data.csv")
+write_csv(cleaned_data, "data/analysis_data/analysis_data.csv")
