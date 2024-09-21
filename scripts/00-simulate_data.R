@@ -31,8 +31,3 @@ simulated_data <-
 
 # View the first few rows of the dataset
 head(simulated_data)
-
-
-
-
-
