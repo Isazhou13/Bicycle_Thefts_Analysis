@@ -15,7 +15,9 @@ raw_data <- read_csv("data/raw_data/raw_data.csv")
 # Select specific columns and then drop rows with missing values
 cleaned_data <- raw_data %>%
   select(OCC_YEAR, OCC_MONTH, OCC_DOW, PREMISES_TYPE, BIKE_COST, STATUS) %>%
-  drop_na()
+  filter(OCC_YEAR >= 2014 & OCC_YEAR <= 2022) %>%  # Filter for years between 2014 and 2022
+  drop_na()  # Remove rows with NA values
+
 
 #Rename column name
 cleaned_data <- cleaned_data %>%
