@@ -1,13 +1,10 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
-author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: LINK."
-date: today
+title: "Prevent Bicycle Thefts: Analyzing the time and location of the thefts "
+author: "Xuanle Zhou"
+thanks: "Code and data are available at: https://github.com/Isazhou13/Bicycle_Thefts_Analysis.git"
+date: 21 September 2024
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "This paper analyzes bicycle theft data in Toronto to identify patterns and contributing factors. Although fewer bicycle thefts have occurred, the recovery rate of stolen bicycles remains consistently low.Thefts are more likely to occur during the summer months, on Fridays, in the afternoon and evening, and in outdoor spaces.The analysis highlights the need to improve recovery strategies and implement effective theft prevention measures to address the ongoing issue of bicycle theft in Toronto."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -18,139 +15,260 @@ bibliography: references.bib
 #| warning: false
 #| message: false
 
+### Workspace Setup ###
 library(tidyverse)
-library(palmerpenguins)
+library(ggplot2)
+library(readr)
+library(dplyr)
+library(here)
+library(knitr)
+library(tidyr)
+library(gridExtra)
+
+#read the data
+
+data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
+
 ```
 
 
 # Introduction
 
-You can and should cross-reference sections and sub-sections. We use @citeR and @rohan.
+Cycling has emerged as a sustainable transportation mode, which offering environmental, social and economic benefit. It reduced reliance on non- renewable resources, promotes physical healthy, and provide a cost-effective alternative to driving. (Pucher & Buehler, 2008). Particularly for short and medium-length trips in urban areas, cycling present a viable and attractive choice for people (Tabascio et al., 2023). By recognizing these advantages, the City of Toronto has actively implemented various initiatives to create a safer and more welcoming cycling environment in the city. 
 
-The remainder of this paper is structured as follows. @sec-data....
+However, bicycle theft remains a significant challenge in worldwide (Johnson et al., 2008). Around 20% of Montreal cyclist stated they are afraid of lack of appropriate parking facilities and fear of the theft (Bachand-Marleau et al., 2011). Studies have indicated that a substantial portion of cyclists reduce or cease their cycling activities following a theft (Cohen et al., 2024), highlighting the negative impact of this crime on the cycling community. Therefore, understanding the patterns of bicycle theft occurrences is crucial for riders to avoid theft and for governments to implement effective strategies to improve cycling safety. Specifically, investigating when and where bicycle theft is most likely to occur.
 
+The remainder of this paper is structured as follows: @sec-data covers the data, and @sec-discussion presents the discussion. The Data section provides context and visualization for the dataset. Section 3 critically examines the results, discusses the limitations of the study, and proposes areas for future exploration.
 
 
 # Data {#sec-data}
 
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
+The dataset for this analysis on Bicycle Thefts in Toronto was obtained from OpenDataToronto [@opendatatoronto]. The data was cleaned and analyzed using R packages [@citeR], including libraries from tidyverse [@tidyverse], ggplot2[@ggplot2], readr [@readr], dplyr [@dplyr], here [@here], knitr[@knitr], and tidyr[@tidyr] .
+
+This dataset on bicycle thefts includes incidents reported to the Toronto Police Service [@bicyclethefts], which update annually. The raw data originally consisted of 32,000 observations across 28 variables. After removing missing values, selecting relevant variables, and improving readability through formatting and renaming, the final cleaned dataset contains 28,293 observations and focuses on the following six variables: Year Offence Occurred, Month Offence Occurred, Day of the Week Offence Occurred, Premises Type of Offence, Cost of Bicycle, and Status of Bicycle. The top five rows of the dataset are displayed in @tbl-BicycleTheftsData. 
 
 ```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
-#| echo: false
-
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
-```
-
-Talk more about it.
-
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
-
-```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
+#| label: tbl-BicycleTheftsData
+#| tbl-cap: Sample of Cleaned Data of Bicycle Thefts in Toronto
 #| echo: false
 #| warning: false
 #| message: false
 
-analysis_data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
-
-analysis_data |> 
-  ggplot(aes(x = width, y = length)) +
-  geom_point(alpha = 0.8) +
-  theme_minimal() +
-  labs(x = "Wing width (mm)",
-       y = "Wing length (mm)")
+kable(head(data, 5))
 ```
 
-Talk way more about it. 
 
+## Offense Trends by Year {#subsec1-data}
 
+@fig-byYear the status of bicycle offenses from 2014 to 2022. The data indicate increases in the total number of offenses from 2014 to 2020. Following 2020, it is noticeable that the occurrence of bicycle thefts declined, suggesting a potential improvement in public safety.
 
-# Model
+Even though there is a declining trend in the total number of offenses in recent years, the recovery of reported bicycle thefts remains concerningly low. As depicted in @fig-byYear, among the total number of occurrences, only a small portion of the bicycles are being recovered and returned to their owners. @fig-byYear2 provides a detailed examination of the bicycle recovery rate over the years, calculated by dividing the total number of recovered bicycles in a specific year by the total number of bicycle thefts in that year. In 2014, the recovery rate was approximately 1.33%, and in 2022, only 0.15% of bicycles were recovered (Appendix @tbl-recovered-rate). This downtrend raises questions about the efficiency of bike recovery in Toronto.
 
-The goal of our modelling strategy is twofold. Firstly,...
-
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
-
-## Model set-up
-
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
-
-\begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
-\end{align}
-
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
-
-
-### Model justification
-
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
-
-We can use maths by including latex between dollar signs, for instance $\theta$.
-
-
-# Results
-
-Our results are summarized in @tbl-modelresults.
 
 ```{r}
+#| label: fig-byYear
+#| fig-cap: Bicycle Status Over the Years
 #| echo: false
-#| eval: true
+#| warning: false
+#| message: false
+  
+data |> 
+  count(`Year Offence Occurred`, `Status of Bicycle`) |> 
+  mutate(`Status of Bicycle` = factor(`Status of Bicycle`, levels = c("Recovered", "Unknown", "Stolen"))) |> 
+  ggplot(mapping = aes(x = `Year Offence Occurred`, y = n, fill = `Status of Bicycle`)) +
+  geom_col() +
+  scale_x_continuous(breaks = seq(2014, 2023, 1)) + 
+  theme_minimal() +
+  labs( x = "Year",  y = "Number of Offences", title = "Bicycle Status Over the Years")+ 
+  theme(plot.title = element_text(hjust = 0.5),
+        panel.grid.minor.x = element_blank(), 
+        legend.key.size = unit(0.5, 'cm'))+
+  guides(x = guide_axis(angle = 45)) +
+  scale_fill_manual(values = c("Recovered" ="pink", "Unknown" = "lightgreen", "Stolen" = "lightblue"))
+
+```
+
+
+```{r}
+#| label: fig-byYear2
+#| fig-cap: Recovered Rate Over the Years
+#| echo: false
 #| warning: false
 #| message: false
 
-library(rstanarm)
+recovered_rate_data <- data |>
+  count(`Year Offence Occurred`, `Status of Bicycle`) |>
+  pivot_wider(names_from = `Status of Bicycle`, values_from = n, values_fill = 0) |>
+  mutate(
+    Total_occurrences = Recovered + Stolen + Unknown,
+    Recovered_Rate_1 = (Recovered / Total_occurrences) * 100,
+    Recovered_Rate = round(Recovered_Rate_1, 2) 
+  ) |>
+  select(`Year Offence Occurred`, Total_occurrences, Recovered, Recovered_Rate) |>
+  rename(`Recovered Rate(%)` = `Recovered_Rate`)  
 
-first_model <-
-  readRDS(file = here::here("models/first_model.rds"))
+ggplot(recovered_rate_data, aes(x = `Year Offence Occurred`, y = `Recovered Rate(%)`)) + 
+  geom_line() +
+  geom_point() + 
+  scale_x_continuous(breaks = unique(recovered_rate_data$`Year Offence Occurred`)) + 
+  theme_minimal() +
+  labs(x = "Year", y = "Recovered Rate (%)", title = "Recovered Rate Over the Years") +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    panel.grid.minor.x = element_blank()
+  )
 ```
+
+## Offense Trends by Month {#subsec2-data}
+
+@fig-ByMonth shows the offenses of bicycle theft by month for each year from 2014 to 2022. The data reveals that the number of occurrences is lowest in February. It then steadily increases in the following months, reaching its peak around July, before showing a declining pattern again. This indicates a seasonal trend in bicycle thefts, where bicycle thefts tend to occur more frequently during the summer and are less wlikely to happen during the winter.
 
 ```{r}
+#| label: fig-ByMonth
+#| fig-cap: Number of Offences by Month
 #| echo: false
-#| eval: true
-#| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
 #| warning: false
+#| message: false
 
-modelsummary::modelsummary(
-  list(
-    "First model" = first_model
-  ),
-  statistic = "mad",
-  fmt = 2
-)
+# Create Bar Chart for Offences Trends by Month
+
+data |> 
+  group_by(`Year Offence Occurred`, `Month Offence Occurred`) |> 
+  summarise(n = n(), .groups = "drop") |> 
+  mutate(`Month Offence Occurred` = factor(`Month Offence Occurred`, 
+                                           levels = month.name)) |> 
+  ggplot(mapping = aes(x = `Month Offence Occurred`, y = n, 
+                       color = as.factor(`Year Offence Occurred`), group = `Year Offence Occurred`)) + 
+  geom_line() +  
+  geom_point(size = 0.5) +  
+  theme_minimal() + 
+  labs(
+    x = "Month",  
+    y = "Number of Offences", 
+    title = "Number of Offences by Month",  
+    color = "Year"  
+  ) + 
+  theme(plot.title = element_text(hjust = 0.5)) + 
+  guides(x = guide_axis(angle = 45)) 
+
+```
+
+## Offense Trends by Day of the Week {#subsec3-data}
+
+@fig-dow illustrates the number of bicycle thefts by day of the week. The data indicates a relatively consistent pattern of thefts throughout the week, with difference between weekdays and weekends. Number of offences of bicycle thefts are generally lower on weekends compared to weekdays. Among the weekdays, Friday stands out as having the highest number of offences. 
+
+```{r}
+#| label: fig-dow
+#| fig-cap: Number of Offences by Day of the Week
+#| echo: false
+#| warning: false
+#| message: false
+
+# Create Bar Chart for Offences Trends by Day of the Week
+dow <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+
+data |> 
+  count(`Day of the Week Offence Occurred`) |> 
+  mutate(`Day of the Week Offence Occurred` = factor(`Day of the Week Offence Occurred`, 
+                                           levels = dow)) |> 
+  ggplot(mapping = aes(x = `Day of the Week Offence Occurred`, y = n)) +
+  geom_col() +
+  theme_minimal() +
+  labs( x = "Day of the Week",  y = "Number of Offences",  title = "Number of Offences by Day of the Week")+ 
+  theme(plot.title = element_text(hjust = 0.5))
+```
+## Offense by Hour {#subsec4-data}
+
+@fig-byhour illustrates the distribution of bicycle thefts by hour. The data shows that the fewest thefts occurred around 5:00, while the peak occurred at 18:00. Categorizing the day into four periods—overnight (0:00-5:59), morning (6:00-11:59), afternoon (12:00-17:59), and evening (18:00-23:59). The graoh shows that most thefts take place during the afternoon and evening, with the fewest incidents occurring overnight.
+
+```{r}
+#| label: fig-byhour
+#| fig-cap: Number of Offences by Premises Type
+#| echo: false
+#| warning: false
+#| message: false
+
+Hour_Offence_Occurred <- data |> 
+  count(`Hour Offence Occurred`) |> 
+  ggplot(mapping = aes(x = `Hour Offence Occurred`, y = n)) + 
+  geom_col() + 
+  theme_minimal() + 
+  labs(x = "Hour Offence Occurred", y = "Number of Offences", title = "Number of Offences by Hour") + 
+  theme(plot.title = element_text(hjust = 0.5))
+
+
+day_part <- data |> 
+  count(`Day Part`) |> 
+  mutate(`Day Part` = factor(`Day Part`, levels = c("Overnight","Morning", "Afternoon", "Evening"))) |> 
+  ggplot(mapping = aes(x = `Day Part`, y = n)) + 
+  geom_col() + 
+  theme_minimal() + 
+  labs(x = "Day Part", y = "Number of Offences", title = "Number of Offences by Day Part") + 
+  theme(plot.title = element_text(hjust = 0.5))
+
+grid.arrange(Hour_Offence_Occurred, day_part, ncol = 2)
+
+```
+
+## Offense by Premises Type {#subsec5-data}
+
+@fig-premises depicts bicycle thefts by premises type, revealing that top three locations were thefts are likely to occur is outside, in apartments, and in houses. This distribution suggesting that outdoor areas, as well as residential environments, are key targets for theft.
+
+```{r}
+#| label: fig-premises
+#| fig-cap: Number of Offences by Premises Type
+#| echo: false
+#| warning: false
+#| message: false
+
+# Create Bar Chart for Offences Trends by Year
+data |> 
+  count(`Premises Type of Offence`) |> 
+  ggplot(mapping = aes(x = reorder(`Premises Type of Offence`,-n), y = n)) +
+  geom_col() +
+  theme_minimal() +
+  labs( x = "Premises Type of Offence",  y = "Number of Offences", title = "Number of Offences by Premises Type")+ 
+  theme(plot.title = element_text(hjust = 0.5))
+
 ```
 
 
+# Discussion {#sec-discussion}
 
+## Summary of Findings {#sec-first-point}
 
-# Discussion
+This study analyzed trends and patterns of bicycle theft occurrences in Toronto using a dataset from the Toronto Police Service covering 2014 to 2022. After data cleaning, the analysis focused on key variables such as bicycle status, offenses by year, month, day of the week, hour, and premises type. The research identifies when and where bicycles are more likely to be stolen. These findings not only can help Toronto residents and policymakers understand theft patterns and develop better prevention strategies, but also can be applied to similar issues in other regions to enhance preventive measures.
 
-## First discussion point {#sec-first-point}
+## Essential to Prevent Bicycle Theft
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+@fig-byYear shows an increase in bicycle thefts from 2014 to 2020, followed by a decline. This suggests that theft prevention measures may have improved. However, the decline also attributed to the widespread impact of COVID-19 pandemic, as individuals spent more time at home and used bicycles less frequently.
 
-## Second discussion point
+The recovery rates for stolen bicycles, as depicted in @fig-byYear2, remain consistently low, dropping from 1.33% in 2014 to a mere 0.15% in 2022. These findings align with previous research, such as Van Lierop et al. (2015), which reported that only 2.5% of survey respondents recovered their stolen bicycles. The low recovery rate is lined with the proof of the ownership problem. Most cyclists cannot provide their bicycle series number, nor any legal evidence to proof the ownership of the bicycle, such as purchasing receipt. (Johnson et al., 2008).
 
-## Third discussion point
+To improve recovery rates, police departments could adopt strategies such as photographing and registering bicycles (Van Lierop et al., 2015). Despite the City of Toronto's efforts to provide guidelines for bicycle theft prevention, including advice on proper locking techniques, selecting safe parking spots, and encouraging bicycle registration, the recovery rate remains low. This raises concerns about the effectiveness of current police recovery strategies and the challenges of tracing and identifying stolen bicycles. It is therefore crucial for cyclists to be more vigilant and cautious when parking their bicycles to reduce theft risk.
+
+## Seasonal, Weekly,Daily, Premises Type Patterns
+
+The findings support existing research that bicycle theft is more frequent in the summer, correlating with higher cycling activity during warmer months (Van Lierop et al.). Figure 3 demonstrates this seasonal trend, with thefts peaking in summer and declining in winter.
+
+When examining weekly pattern, bicycle thefts are more common on weekdays, particularly on Fridays, compared to weekends. This is related to the increased presence of bicycles on the streets during weekdays due to commuting, contributes to higher theft rates.
+Daily patterns shows that most bicycle thefts occur in the afternoon and evening, whereas overnight thefts are relatively rare. However, this finding contradicts other studies, such as Barbara's research, which reported that 49% of thefts occur overnight.
+
+The data indicates that the majority of bicycle thefts occur outdoors, making it the most frequent location for thefts. This suggests that public and outdoor spaces are key targets for bicycle thieves.
 
 ## Weaknesses and next steps
 
-Weaknesses and next steps should also be included.
+Despite the valuable insights from this analysis, there are several limitations in the dataset.
+
+Firstly, this dataset does not provide information on whether the stolen bicycles were locked, or if locked, what type of lock was used. This information could significantly influence the theft risk and duration required for theft, therefore influences bicycle theft occurrences count. 
+
+In addition, this dataset has reporting bias since the dataset is based on police reports, it excludes unreported bicycle thefts, potentially resulting in an incomplete picture of theft occurrences in Toronto.
+
+Moreover, the dataset lacks information on the total number of bicycles in Toronto or yearly and monthly bicycle usage patterns. This makes the yearly and monthly bicycle theft analysis less precise, as more frequent bicycle use increases the likelihood of theft. 
+
+Future studies would benefit from finding related information and incorporating bicycle usage data to calculate a more accurate bicycle theft percentage relative to total usage bicycles.
+
 
 \newpage
 
@@ -158,59 +276,16 @@ Weaknesses and next steps should also be included.
 
 # Appendix {-}
 
-
-# Additional data details
-
-# Model details {#sec-model-details}
-
-## Posterior predictive check
-
-In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
-
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
-
 ```{r}
-#| eval: true
+#| label: tbl-recovered-rate
+#| tbl-cap: Recovered Rate of Bicycle Theft Incidents by Year
 #| echo: false
-#| message: false
 #| warning: false
-#| label: fig-ppcheckandposteriorvsprior
-#| layout-ncol: 2
-#| fig-cap: "Examining how the model fits, and is affected by, the data"
-#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
-
-pp_check(first_model) +
-  theme_classic() +
-  theme(legend.position = "bottom")
-
-posterior_vs_prior(first_model) +
-  theme_minimal() +
-  scale_color_brewer(palette = "Set1") +
-  theme(legend.position = "bottom") +
-  coord_flip()
-```
-
-## Diagnostics
-
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
-
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
-
-```{r}
-#| echo: false
-#| eval: true
 #| message: false
-#| warning: false
-#| label: fig-stanareyouokay
-#| fig-cap: "Checking the convergence of the MCMC algorithm"
-#| fig-subcap: ["Trace plot", "Rhat plot"]
-#| layout-ncol: 2
 
-plot(first_model, "trace")
-
-plot(first_model, "rhat")
+knitr::kable(recovered_rate_data)
 ```
-
+```
 
 
 \newpage
