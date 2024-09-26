@@ -23,11 +23,24 @@ simulated_data <-
                      "June", "July","August", "September", "October", "November", "December"), num_rows, replace = TRUE),
     weekday = sample(c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
                        "Friday", "Saturday"), num_rows, replace = TRUE),
-    premises_type = sample(c("Apartment", "Commercial", "Educational", "House", "Other",
-                             "Outside", "Transit"), num_rows, replace = TRUE),
-    cost = sample(1:10000, num_rows, replace = TRUE),
+    hour = sample(sample(0:24, num_rows, replace = TRUE),),
+    location_type = sample(c("Apartment", "Bar / Restaurant", "Convenience Stores", "Bank And Other Financial Institutions",
+                             "Universities / Colleges", "Schools During Supervised Activity", 
+                             "Schools During Un-Supervised Activity", "Single Home/House", "Private Property Structure", 
+                             "Hospital / Institutions / Medical Facilities", "Homeless Shelter / Mission", 
+                             "Streets/Roads/Highways", "Parking Lots", "TTC bus stop/shelter/loop", 
+                             "Go Station", "TTC Subway Station", "TTC Bus"), num_rows, replace = TRUE),
     status = sample(c("Recovered", "Stolen", "Unknown"), num_rows, replace = TRUE)
   )
+
+# Add day part based on hour
+simulated_data <- simulated_data %>%
+  mutate(day_part = case_when(
+    hour >= 6 & hour < 12 ~ "Morning",
+    hour >= 12 & hour < 18 ~ "Afternoon",
+    hour >= 18 & hour < 24 ~ "Evening",
+    TRUE ~ "Overnight"  # Covers hours 0-6
+  ))
 
 # View the first few rows of the dataset
 head(simulated_data)
