@@ -19,7 +19,7 @@ cleaned_data <- raw_data %>%
 # Select specific columns and then drop rows with missing values
 cleaned_data <- cleaned_data %>%
   select(OCC_YEAR, OCC_MONTH, OCC_DOW, OCC_HOUR,LOCATION_TYPE, STATUS) %>%
-  filter(OCC_YEAR >= 2014 & OCC_YEAR <= 2022) %>%  
+  filter(OCC_YEAR >= 2014 & OCC_YEAR <= 2023) %>%  
   drop_na()  # Remove rows with NA values
 
 

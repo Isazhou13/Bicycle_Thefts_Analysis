@@ -11,23 +11,11 @@
 
 library(opendatatoronto)
 library(dplyr)
-
-# get package
-package <- show_package("c7d34d9b-23d2-44fe-8b3b-cd82c8b38978")
-package
-
-# get all resources for this package
-resources <- list_package_resources("c7d34d9b-23d2-44fe-8b3b-cd82c8b38978")
-
-# identify datastore resources; by default, Toronto Open Data sets datastore resource format to CSV for non-geospatial and GeoJSON for geospatial resources
-datastore_resources <- filter(resources, tolower(format) %in% c('csv', 'geojson'))
-
-# load the first datastore resource as a sample
-data <- filter(datastore_resources, row_number()==1) %>% get_resource()
-data
-
-#### Save data ####
-
-# change the_raw_data to whatever name you assigned when you downloaded it.
 library(readr)
-write_csv(data, "data/raw_data/raw_data.csv") 
+
+#the R Codes from OpenDataToronto provided for developers only downloads top 32,000 rows of observations, which is not sufficient for this analysis. Thus,read_csv was used to save the datasets.
+
+#### Download data ####
+
+data <- read_csv("https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/c7d34d9b-23d2-44fe-8b3b-cd82c8b38978/resource/55136dac-26b1-4028-b9f5-7c2344f94153/download/bicycle-thefts%20-%204326.csv")
+write_csv(data, "data/raw_data/raw_data.csv")
