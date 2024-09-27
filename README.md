@@ -11,7 +11,7 @@ The dataset of Bicycle Thefts is available [here](https://open.toronto.ca/datase
 The repo is structured as:
 
 -   `data/raw_data` contains the raw data as obtained from OpenDataToronto.
--   `data/analysis_data` contains the cleaned dataset that was constructed for the analysis.
+-   `data/analysis_data` contains the cleaned dataset that was constructed for the analysis and simulated data.
 -   `other/llm` contains details about LLM chat interactions that being used for this analyze.
 -   `other/sketches` detailed hand-drawn sketches that illustrate the ideal structure of the analysis dataset and graphs.
 -   `paper` contains the files used to generate the paper, including the Quarto document and reference bibliography file, as well as the PDF of the paper. 
