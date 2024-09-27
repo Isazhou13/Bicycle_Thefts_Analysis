@@ -1,30 +1,23 @@
-# Starter folder
+# Bicycle Thefts Analysis
 
 ## Overview
 
-This repo provides students with a foundation for their own projects associated with *Telling Stories with Data*. You do not need every aspect for every paper and you should delete aspects that you do not need.
+Cycling is a sustainable mode of transportation, particularly suitable for short and medium-distance trips. This [paper](https://github.com/Isazhou13/Bicycle_Thefts_Analysis/blob/main/paper/paper.pdf) will focus on the patterns of time and location, analyzing when and where bicycle thefts most frequently occur to help promote a safer cycling environment.
 
+The dataset of Bicycle Thefts is available [here](https://open.toronto.ca/dataset/bicycle-thefts/)
 
 ## File Structure
 
 The repo is structured as:
 
--   `data/raw_data` contains the raw data as obtained from X.
--   `data/analysis_data` contains the cleaned dataset that was constructed.
--   `model` contains fitted models. 
--   `other` contains relevant literature, details about LLM chat interactions, and sketches.
+-   `data/raw_data` contains the raw data as obtained from OpenDataToronto.
+-   `data/analysis_data` contains the cleaned dataset that was constructed for the analysis.
+-   `other/llm` contains details about LLM chat interactions that being used for this analyze.
+-   `other/sketches` detailed hand-drawn sketches that illustrate the ideal structure of the analysis dataset and graphs.
 -   `paper` contains the files used to generate the paper, including the Quarto document and reference bibliography file, as well as the PDF of the paper. 
--   `scripts` contains the R scripts used to simulate, download and clean data.
+-   `scripts` contains the R scripts used to simulate, download, clean and test data.
 
 
 ## Statement on LLM usage
 
-Aspects of the code were written with the help of the auto-complete tool, Codriver. The abstract and introduction were written with the help of ChatHorse and the entire chat history is available in inputs/llms/usage.txt.
-
-## Some checks
-
-- [ ] Change the rproj file name so that it's not starter_folder.Rproj
-- [ ] Change the README title so that it's not Starter folder
-- [ ] Remove files that you're not using
-- [ ] Update comments in R scripts
-- [ ] Remove this checklist
+Aspects of the code were written with the help of the LLM tool, ChatGPT and the entire chat history is available in other/llms/usage.txt.
