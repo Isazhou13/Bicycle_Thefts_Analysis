@@ -2,7 +2,7 @@
 title: "Prevent Bicycle Thefts: Analyzing the time and location of the thefts "
 author: "Xuanle Zhou"
 thanks: "Code and data are available at: https://github.com/Isazhou13/Bicycle_Thefts_Analysis.git"
-date: 21 September 2024
+date: 27 September 2024
 date-format: long
 abstract: "This study investigates the patterns and contributing factors of bicycle theft in Toronto, Canada. Although fewer bicycle thefts have occurred in recent years, the recovery rate of stolen bicycles remains consistently low. Bicycle thefts are more likely to occur during the summer months, on Fridays, in the afternoon and evening, and in apartment. The analysis highlights the need to improve recovery strategies and implement effective bicycle theft prevention measures to address the ongoing issue of bicycle theft in Toronto, thereby fostering a safer and more secure city for cyclists."
 format: pdf
@@ -39,7 +39,7 @@ However, bicycle theft remains a persistent challenge worldwide (@johnson2008bic
 
 This study utilized open-source data from OpenDataToronto to investigate the patterns and underlying causes of bicycle theft in the city. By cleaning and analyzing the data, the study identified a low recovery rate for stolen bicycles, underscoring the need for more robust theft prevention measures. Additionally, the analysis shows that bicycle thefts are more likely to occur during the summer season, on Fridays, between 12:00 PM and 6:00 PM, and in apartment, highlighting the importance of prevention strategies in these times and areas.
 
-The remainder of this paper is structured as follows: @sec-data covers the data, and @sec-discussion presents the discussion. The Data section provides context and visualization for the dataset. Section 3 critically examines the results, discusses the limitations of the study, and proposes areas for future exploration.
+The remainder of this paper is structured as follows: @sec-data covers the data, and @sec-discussion presents the discussion. The Data section provides context and visualization for the dataset. @sec-discussion critically examines the results, discusses the limitations of the study, and proposes areas for future exploration.
 
 
 # Data {#sec-data}
@@ -138,8 +138,6 @@ ggplot(recovered_rate_data, aes(x = `Year`, y = `Recovered Rate(%)`)) +
 #| warning: false
 #| message: false
 
-# Create Bar Chart for Offences Trends by Month
-
 data |> 
   group_by(`Year`, `Month`) |> 
   summarise(n = n(), .groups = "drop") |> 
@@ -170,7 +168,6 @@ data |>
 #| warning: false
 #| message: false
 
-# Create Bar Chart for Offences Trends by Day of the Week
 dow <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
 
 data |> 
@@ -235,7 +232,7 @@ data |>
   geom_col() + 
   theme_minimal() + 
   labs(
-    x = "", 
+    x = "Location", 
     y = "Number of Offences", 
   ) + 
   theme(plot.title = element_text(hjust = 0.5))+
@@ -275,7 +272,7 @@ When examining weekly patterns,as shown in @fig-dow bicycle thefts are more comm
 
 @fig-location indicates that the majority of bicycle thefts occur at apartments, making them the most common location for these crimes. The second highest occurrence of bicycle thefts is found on streets, roads, and highways. Research shows that bicycles are more frequently stolen in places where parking racks are installed (@chen2018bicycle), which aligns with our findings. Apartments typically do not allow residents to bring bicycles into their units, as doing so can cause inconvenience in common areas, such as elevators, for other residents. Moreover, storing bicycles on balconies can create safety issues. Therefore, many apartments provide residents with bicycle racks where they can securely lock their bicycles. However, the management of these facilities is not always effective, leading to a high probability of theft in the apartments. Similarly, streets, roads, and highways also have bicycle racks for parking bicycles.
 
-## Weaknesses and next steps
+## Weaknesses and Next Steps
 
 The dataset currently lacks critical information related to bicycle thefts. For example, it does not specify whether the stolen bicycles were locked and, if so, what type of lock was used. Research indicates that 10% of victims did not lock their bicycles at the time of theft, leaving them more likely to be stolen (@van2015breaking). Additionally, different locks require varying amounts of time and effort to unlock, directly influencing the success rate of thefts. Detailed information about the location is also relevant, as bicycle thefts are more likely to occur mid-block than at intersections (@chen2018bicycle)
 
