@@ -1,5 +1,5 @@
 LLM: ChatGPT.
-Date: 21 September 2024
+Date: 27 September 2024
 
 
 Report content
@@ -208,7 +208,11 @@ Re-run Tests: After confirming your file structure and possibly using the here p
 
 If you continue to have issues, let me know!
 
-Error in geom_text(aes(label = Recovery_Rate), vjust = -0.5, color = "black") :   ℹ Error occurred in the 3rd layer.Caused by error:! object 'Recovery_Rate' not found
+Error in geom_text(aes(label = Recovery_Rate), vjust = -0.5, color = "black") : 
+  
+ℹ Error occurred in the 3rd layer.
+Caused by error:
+! object 'Recovery_Rate' not found
 ChatGPT said:
 ChatGPT
 The error indicates that the Recovery_Rate variable is not available in the context of the geom_text() function. This might be due to the fact that the Recovery_Rate column is being created in the mutate() step but is not being retained for use in the ggplot() call.
@@ -266,7 +270,22 @@ This should work without errors, and the line chart will display each point labe
 
 
 You said:
-Error in geom_text():! Problem while computing aesthetics.ℹ Error occurred in the 3rd layer.Caused by error:! object 'Recovery_Rate' not foundBacktrace:  1. base (local) <fn>(x)  2. ggplot2:::print.ggplot(x)  4. ggplot2:::ggplot_build.ggplot(x)  5. ggplot2:::by_layer(...) 12. ggplot2 (local) f(l = layers[[i]], d = data[[i]]) 13. l$compute_aesthetics(d, plot) 14. ggplot2 (local) compute_aesthetics(..., self = self) 15. ggplot2:::scales_add_defaults(...) 16. base::lapply(aesthetics[new_aesthetics], eval_tidy, data = data) 17. rlang (local) FUN(X[[i]], ...)
+Error in geom_text():
+! Problem while computing aesthetics.
+ℹ Error occurred in the 3rd layer.
+Caused by error:
+! object 'Recovery_Rate' not found
+Backtrace:
+  1. base (local) <fn>(x)
+  2. ggplot2:::print.ggplot(x)
+  4. ggplot2:::ggplot_build.ggplot(x)
+  5. ggplot2:::by_layer(...)
+ 12. ggplot2 (local) f(l = layers[[i]], d = data[[i]])
+ 13. l$compute_aesthetics(d, plot)
+ 14. ggplot2 (local) compute_aesthetics(..., self = self)
+ 15. ggplot2:::scales_add_defaults(...)
+ 16. base::lapply(aesthetics[new_aesthetics], eval_tidy, data = data)
+ 17. rlang (local) FUN(X[[i]], ...)
 ChatGPT said:
 ChatGPT
 The error suggests that the Recovery_Rate column is still not being recognized within the ggplot() call. This could happen if the column is inadvertently excluded or if there’s an issue in how the data is structured.
@@ -746,7 +765,9 @@ By implementing these strategies, you should be able to create a table that fits
 
 
 You said:
-Show in New WindowError in kable_styling(., column_width = c("2em", "2em", "2em", "2em",  :   unused argument (column_width = c("2em", "2em", "2em", "2em", "10em", "2em", "2em", "2em"))
+Show in New Window
+Error in kable_styling(., column_width = c("2em", "2em", "2em", "2em",  : 
+  unused argument (column_width = c("2em", "2em", "2em", "2em", "10em", "2em", "2em", "2em"))
 ChatGPT said:
 ChatGPT
 The error you're encountering indicates that the column_width argument is not being recognized, likely because you're not using the kableExtra package, which provides that functionality.
@@ -924,8 +945,15 @@ If you're still encountering issues, please provide a snippet of your R Markdown
 
 
 You said:
-i am using \appendix# Appendix {#sec}## Appendix1 {#subsec1}
-{r}#| label: tbl-recovered-rate#| tbl-cap: Recovered Rate of Bicycle Theft Incidents by Year#| echo: false#| warning: false#| message: false
+i am using \appendix
+# Appendix {#sec}
+## Appendix1 {#subsec1}
+{r}
+#| label: tbl-recovered-rate
+#| tbl-cap: Recovered Rate of Bicycle Theft Incidents by Year
+#| echo: false
+#| warning: false
+#| message: false
 ChatGPT said:
 ChatGPT
 Given your setup using the \appendix command and the structure of your R Markdown document, there are a few factors that could affect the table numbering and order. Here’s how you can troubleshoot and ensure your tables appear in the correct sequence:
