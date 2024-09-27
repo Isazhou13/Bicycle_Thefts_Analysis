@@ -1,10 +1,9 @@
 #### Preamble ####
 # Purpose: Cleans the raw data on bicycle thefts downloaded from OpenDataToronto
 # Author: Xuanle Zhou
-# Date: 27 September 2024 
+# Date: 27 September 2024
 # Contact: isabella.zhou@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: N/A
 
 #### Workspace setup ####
 library(tidyverse)
@@ -18,8 +17,8 @@ cleaned_data <- raw_data %>%
 
 # Select specific columns and then drop rows with missing values
 cleaned_data <- cleaned_data %>%
-  select(OCC_YEAR, OCC_MONTH, OCC_DOW, OCC_HOUR,LOCATION_TYPE, STATUS) %>%
-  filter(OCC_YEAR >= 2014 & OCC_YEAR <= 2023) %>%  
+  select(OCC_YEAR, OCC_MONTH, OCC_DOW, OCC_HOUR, LOCATION_TYPE, STATUS) %>%
+  filter(OCC_YEAR >= 2014 & OCC_YEAR <= 2023) %>%
   drop_na()  # Remove rows with NA values
 
 
