@@ -2,7 +2,7 @@
 
 ## Overview
 
-Cycling is a sustainable mode of transportation, particularly suitable for short and medium-distance trips. This [paper](https://github.com/Isazhou13/Bicycle_Thefts_Analysis/blob/main/paper/paper.pdf) will focus on the patterns of time and location, analyzing when and where bicycle thefts most frequently occur to help promote a safer cycling environment.
+Cycling is a sustainable mode of transportation, particularly suitable for short and medium-distance trips. However, bicycle theft is a concern for cyclists. This [paper](https://github.com/Isazhou13/Bicycle_Thefts_Analysis/blob/main/paper/paper.pdf) will focus on the patterns of time and location, analyzing when and where bicycle thefts most frequently occur to help promote a safer cycling environment.
 
 The dataset of Bicycle Thefts is available [here](https://open.toronto.ca/dataset/bicycle-thefts/)
 
